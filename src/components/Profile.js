@@ -24,10 +24,10 @@ export default function Profile() {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="card text-center" style={{ width: '300px', height: '150px' }}>
+      <div className="card text-center" style={{ width: '300px', height: '180px' }}>
         <div className="card-body">
-          <h5 className="card-title">Name: {userDetails.name}</h5>
-          <p className="card-text">Email: {userDetails.email}</p>
+          <h5 className="card-title my-3">Name: {userDetails.name}</h5>
+          <h6 className="card-text my-3">Email: {userDetails.email}</h6>
           <Link to="/" className="btn btn-primary">
             Go back
           </Link>
