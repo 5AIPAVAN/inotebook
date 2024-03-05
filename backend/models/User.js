@@ -9,7 +9,8 @@ const UserSchema = new Schema({
     //  ex:-  title: String, String is shorthand for {type: String}
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     email: {
         type: String,

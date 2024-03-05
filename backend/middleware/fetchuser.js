@@ -26,7 +26,8 @@ const fetchuser = (req,res,next) => {
             req.user = data.user;
         }
 
-        console.log("IN MIDDLEWARE DATA OBTAINED + "+ req.user)
+        console.log("IN MIDDLEWARE DATA OBTAINED + ")
+        console.log( req.user);
 
         // move to next function (see at where fetchuser middleware is used)
         next();

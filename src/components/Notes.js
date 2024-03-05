@@ -3,6 +3,7 @@ import NoteItem from './NoteItem'
 import NoteContext from '../contexts/notes/noteContext';
 import { useNavigate } from 'react-router-dom';
 
+
 export default function Notes() {
 
     let navigate = useNavigate();

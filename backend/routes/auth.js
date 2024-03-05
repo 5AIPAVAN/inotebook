@@ -4,7 +4,16 @@ const User = require('../models/User')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const fetchuser = require('../middleware/fetchuser')
+const fetchuser = require('../middleware/fetchuser');
+const { useRouteError } = require('react-router-dom');
+const rateLimit = require('express-rate-limit');
+
+// Define rate limiting options for login route
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 requests per windowMs
+    message: 'Too many login attempts, please try again later.',
+  });
 
 // already in '/api/auth'
 // router.get('/') means '/api/auth'
@@ -90,7 +99,7 @@ router.post('/createuser', [
 // USER LOGIN - POST method
 // complete path -> /api/auth/login
 
-router.post('/login', [
+router.post('/login',loginLimiter,  [
     body('email', 'ENTER A VALID EMAIL').isEmail(),
     body('password', 'ENTER A VALID PASSWORD(min length: 5 )').isLength({ min: 5 })
 ], async (req, res) => {
@@ -161,7 +170,7 @@ router.post('/login', [
 
 // GET USER LOGGED-IN USER DETAILS , METHOD :- POST , LOGIN REQUIRED
 
-router.post('/getuser', fetchuser , async (req, res) => {
+router.get('/getuser', fetchuser , async (req, res) => {
 
  // sync (req, res) => {} is called after middleware function fetchuser is executed
   
@@ -170,15 +179,16 @@ router.post('/getuser', fetchuser , async (req, res) => {
         // we obtained req.user from middleware function -> fetchuser.js
         // obtain user id in userId variable
         const userId = req.user.id;
+        console.log("ingetuser : "+req.user.id)
 
         // get all data of fetched user(using his userId) except "password" attribute from database
-        const user = await User.findById(userId).select("-password");
+        const userr = await User.findById(userId).select("-password");
 
-        //  console.log(user);
+          console.log(userr);
       
        // send user data as response
-        res.send(user);
-
+       res.json(userr);
+     
     }catch(error){
 
         console.log("SOME ERROR OCCURED (try-catch) :" + error.message);

@@ -2,6 +2,7 @@ import {useState} from "react";
 import NoteContext from "./noteContext"; // importing created NoteContext to use it.
 import { json } from "react-router-dom";
 
+
 const NoteState = (props) =>{
 // Whatever state variables , Functions written here can be imported and used in any component in project
 
@@ -204,13 +205,33 @@ const editNote = async (id,title,description,tag)=>{
 }
 
 
+const [userDetails,SetuserDetails] = useState("unknown user");
+const getuserdetails = async () => {
+  // API CALLS
+  console.log("TOKEN IN LOCAL STORAGE AT GETUSER DETAILS FUNCTION : - " +localStorage.getItem('token'))
+  const response = await fetch(`${host}/api/auth/getuser`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      //"given-auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU3ODM1YmY3ZDRiYWU0MjgxYmEwNjZiIn0sImlhdCI6MTcwMjM3Njg5NX0.as30ph93wTbBz8cyu-wnFK4RlSaoOMhKGWkox4usf1g",
+      "given-auth-token" : localStorage.getItem('token'),
+    },
+  });
+
+  const json = await response.json();
+  console.log("IN GET USeRR DETAILS NOTE STATE"+json);
+   SetuserDetails(json);
+
+}
+
+
 
 
 
     return (
 // write all variables,functions here in value={{  }} to use them further
 
-        <NoteContext.Provider value={{notes,SetNotes,addNote,deleteNote,getNotes,editNote}}>
+        <NoteContext.Provider value={{notes,SetNotes,addNote,deleteNote,getNotes,editNote,getuserdetails,userDetails}}>
             {props.children}
         </NoteContext.Provider>
 
